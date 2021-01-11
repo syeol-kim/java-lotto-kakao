@@ -1,59 +1,26 @@
 package lotto.domain;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.List;
 
-public class LottoTicket implements NumberPickStrategy {
-    private final static List<LottoNumber> digits = IntStream
-            .rangeClosed(LottoNumber.LOWER_BOUND, LottoNumber.UPPER_BOUND)
-            .boxed()
-            .map(LottoNumber::new)
-            .collect(Collectors.toList());
+public class LottoTicket {
+    private final List<LottoNumbers> numbersList;
 
-    private final LottoNumbers lottoNumbers;
-
-    public LottoTicket() {
-        lottoNumbers = generateLottoNumbers();
+    public LottoTicket(List<LottoNumbers> numbersList) {
+        validate(numbersList);
+        this.numbersList = numbersList;
     }
 
-    public LottoTicket(LottoNumbers lottoNumbers) {
-        this.lottoNumbers = lottoNumbers;
-    }
-
-    public LottoNumbers generateLottoNumbers() {
-        List<LottoNumber> numbers =
-                generateRandomLottoNumbers(LottoNumbers.ALLOWED_NUMBER_COUNT);
-        return new LottoNumbers(numbers);
-    }
-
-    public LottoNumbers getLottoNumbers() {
-        return lottoNumbers;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof LottoNumbers) {
-            LottoNumbers numbers = (LottoNumbers) obj;
-            return this.lottoNumbers.equals(numbers);
+    private void validate(List<LottoNumbers> numbersList) {
+        if (isEmpty(numbersList)) {
+            throw new IllegalArgumentException("티켓은 최소 1개 이상의 로또 번호들을 가져야 합니다.");
         }
-
-        if (obj instanceof LottoTicket) {
-            LottoTicket ticket = (LottoTicket) obj;
-            return this.lottoNumbers.equals(ticket.lottoNumbers);
-        }
-
-        return false;
     }
 
-    public boolean contains(LottoNumber number) {
-        return lottoNumbers.contains(number);
+    private boolean isEmpty(List<LottoNumbers> numbersList) {
+        return numbersList == null || numbersList.isEmpty();
     }
 
-    private List<LottoNumber> generateRandomLottoNumbers(int size) {
-        Collections.shuffle(digits);
-        return digits.stream()
-                .limit(size)
-                .collect(Collectors.toList());
+    public List<LottoNumbers> getLottoNumbersList() {
+        return numbersList;
     }
 }
