@@ -6,21 +6,22 @@ import lotto.view.OutputView;
 
 public class LottoMain {
     public static void main(String[] args) {
-        int investment = InputView.getInsertPrice();
-        InsertPrice insertPrice = new InsertPrice(investment);
-        OutputView.printLottoTicketNum(insertPrice.getPrice());
+        Price inputPrice = InputView.getInputPrice();
+        OutputView.printNumberOfLottoPurchased(inputPrice);
 
-        LottoTickets tickets = LottoTicketIssuer.issue(insertPrice.getPrice());
-        OutputView.printLottoTickets(tickets);
+        LottoTicket ticket = LottoTicketIssuer.issue(inputPrice);
+        OutputView.printLottoTicket(ticket);
 
-        LottoNumbers luckyNumber = InputView.getLuckyNumber();
-        LottoNumber bonusNumber = InputView.getBonusNumber();
-        WinningNumbers winningNumbers = new WinningNumbers(luckyNumber, bonusNumber);
+        LottoNumbers luckyNumbers = InputView.getLuckyNumbers();
+        LottoNumber bonusNumber = InputView.getBonusNumber(luckyNumbers);
+        WinningNumbers winningNumbers = new WinningNumbers(luckyNumbers, bonusNumber);
 
-        LottoMatcher lottoMatcher = new LottoMatcher(winningNumbers);
-        MatchResults matchResults = lottoMatcher.match(tickets);
+        LottoMatchingChecker matchingChecker = new LottoMatchingChecker();
+        MatchResult matchResult = matchingChecker.getMatchResult(winningNumbers, ticket);
 
-        LottoStatistics statistics = new LottoStatistics(matchResults, insertPrice);
-        OutputView.printStatistics(statistics);
+        Price outputPrice = LottoCalculator.getTotalPrice(matchResult);
+        Rate rateOfReturn = LottoCalculator.getRateOfReturn(inputPrice, outputPrice);
+
+        OutputView.printStatistics(matchResult, rateOfReturn);
     }
 }
