@@ -8,20 +8,30 @@ import static org.assertj.core.api.Assertions.*;
 
 public class LottoNumberTest {
     @ParameterizedTest
-    @ValueSource(ints = {-1, 0, 46})
-    public void invalidNumbers(int value) {
-        assertThatThrownBy(() -> new LottoNumber(value))
-                .isInstanceOf(IllegalArgumentException.class);
+    @ValueSource(ints = {1, 45})
+    public void Should_SucceedInCreatingLottoNumber(int number) {
+        assertThat(new LottoNumber(number))
+                .isInstanceOf(LottoNumber.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 46})
+    public void Should_FailToCreateLottoNumber_NumberIsOutOfRange(int number) {
+        assertThatThrownBy(() -> new LottoNumber(number))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(number + " -> 로또 번호는 1~45 사이의 정수여야 합니다.");
     }
 
     @ParameterizedTest
     @ValueSource(ints = {1, 45})
-    public void isEqualAndValid(int value) {
-        assertThat(new LottoNumber(value)).isEqualTo(new LottoNumber(value));
+    public void Should_IsEqual_HaveSameNumber(int number) {
+        assertThat(new LottoNumber(number))
+                .isEqualTo(new LottoNumber(number));
     }
 
     @Test
-    public void isNotEqualTest(){
-        assertThat(new LottoNumber(1)).isNotEqualTo(new LottoNumber(10));
+    public void Should_IsNotEqual_HaveDifferentNumber() {
+        assertThat(new LottoNumber(1))
+                .isNotEqualTo(new LottoNumber(45));
     }
 }

@@ -1,35 +1,37 @@
 package lotto.domain;
 
 public class LottoNumber {
-    static final int LOWER_BOUND = 1;
-    static final int UPPER_BOUND = 45;
+    public static final int LOWER_BOUND = 1;
+    public static final int UPPER_BOUND = 45;
 
     private final int number;
 
     public LottoNumber(int number) {
-        if (!isInRange(number)) {
-            String message = String.format("Number should be between %d~%d.",
-                    LOWER_BOUND,
-                    UPPER_BOUND);
-            throw new IllegalArgumentException(message);
-        }
-
+        validate(number);
         this.number = number;
     }
 
-    public int getNumber() {
-        return number;
+    private void validate(int number) {
+        if (isOutOfRange(number)) {
+            String message = String.format("%d -> 로또 번호는 %d~%d 사이의 정수여야 합니다.",
+                    number, LOWER_BOUND, UPPER_BOUND);
+            throw new IllegalArgumentException(message);
+        }
     }
 
-    private boolean isInRange(int number) {
-        return LOWER_BOUND <= number && number <= UPPER_BOUND;
+    private boolean isOutOfRange(int number) {
+        return number < LOWER_BOUND || number > UPPER_BOUND;
+    }
+
+    public String toString() {
+        return Integer.toString(number);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof LottoNumber) {
             LottoNumber lottoNumber = (LottoNumber) obj;
-            return this.number == lottoNumber.getNumber();
+            return this.number == lottoNumber.number;
         }
         return false;
     }
