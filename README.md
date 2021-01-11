@@ -91,11 +91,11 @@
 
 ### Model
 
-* LottoTicket
+* LottoTicketIssuer
   * 로또 번호 생성
-* Calculator
+* LottoCalculator
   * 수익률 계산
-* Matcher
+* LottoMatchingChecker
   * 당첨 결과 확인
 
 ### View
@@ -104,10 +104,5 @@
   * 구입 금액 입력 받기
   * 지난 주 당첨 번호 입력 받기
 * OutputView
-  * 잔돈 출력
+  * 구입한 로또 개수 출력
   * 당첨 통계 출력
-
-### Utils
-
-* 로또 번호 유효성 검사(중복, 범위, 개수)
-* 로또 번호 생성
