@@ -5,33 +5,26 @@ public class WinningNumbers {
     private final LottoNumber bonusNumber;
 
     public WinningNumbers(LottoNumbers luckyNumbers, LottoNumber bonusNumber) {
-        if (isDuplicate(luckyNumbers, bonusNumber)) {
-            String message = "Bonus number already exists in lucky numbers";
-            throw new IllegalArgumentException(message);
-        }
+        validate(luckyNumbers, bonusNumber);
         this.luckyNumbers = luckyNumbers;
         this.bonusNumber = bonusNumber;
+    }
+
+    public void validate(LottoNumbers luckyNumbers, LottoNumber bonusNumber) {
+        if (isDuplicate(luckyNumbers, bonusNumber)) {
+            throw new IllegalArgumentException(bonusNumber + " -> 보너스 번호와 중복되지 않아야 합니다.");
+        }
     }
 
     private boolean isDuplicate(LottoNumbers luckyNumbers, LottoNumber bonusNumber) {
         return luckyNumbers.contains(bonusNumber);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof WinningNumbers) {
-            WinningNumbers winningNumbers = (WinningNumbers) obj;
-            return this.luckyNumbers.equals(winningNumbers.luckyNumbers)
-                    && this.bonusNumber.equals(winningNumbers.bonusNumber);
-        }
-        return false;
+    public Count getNumberOfElementsInLuckyNumbers(LottoNumbers lottoNumbers) {
+        return luckyNumbers.getNumberOfEqualElements(lottoNumbers);
     }
 
-    public LottoNumbers getLuckyNumbers() {
-        return luckyNumbers;
-    }
-
-    public LottoNumber getBunusNumber() {
-        return bonusNumber;
+    public boolean matchBonusNumber(LottoNumbers lottoNumbers) {
+        return lottoNumbers.contains(bonusNumber);
     }
 }
