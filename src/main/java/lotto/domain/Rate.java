@@ -1,13 +1,11 @@
 package lotto.domain;
 
-public class Rate {
-    private final int rate;
+import java.util.Objects;
 
-    public Rate(int rate) {
-        if (isNegative(rate)) {
-            String message = "rate cannot be negative";
-            throw new IllegalArgumentException(message);
-        }
+public class Rate {
+    private int rate;
+
+    Rate(int rate) {
         this.rate = rate;
     }
 
@@ -15,16 +13,16 @@ public class Rate {
         return rate;
     }
 
-    private boolean isNegative(int rate) {
-        return rate < 0;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rate r = (Rate) o;
+        return this.rate == r.rate;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Rate) {
-            Rate rate = (Rate) obj;
-            return this.rate == rate.rate;
-        }
-        return false;
+    public int hashCode() {
+        return Objects.hash(rate);
     }
 }
