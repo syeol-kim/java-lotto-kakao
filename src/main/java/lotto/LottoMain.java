@@ -4,12 +4,19 @@ import lotto.domain.*;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
+import java.util.List;
+
+import static lotto.domain.LottoTicketIssuer.LOTTO_PRICE;
+
 public class LottoMain {
     public static void main(String[] args) {
         Price inputPrice = InputView.getInputPrice();
-        OutputView.printNumberOfLottoPurchased(inputPrice);
+        Count numberOfManualLotto = InputView.getNumberOfManualLotto(inputPrice);
+        Count numberOfAutomaticLotto = new Count(inputPrice.divide(LOTTO_PRICE).getPrice() - numberOfManualLotto.getCount());
+        List<LottoNumbers> manualLottoList = InputView.getManualLottoList(numberOfManualLotto);
 
-        LottoTicket ticket = LottoTicketIssuer.issue(inputPrice);
+        LottoTicket ticket = LottoTicketIssuer.issue(inputPrice, manualLottoList);
+        OutputView.printNumberOfLottoPurchased(numberOfManualLotto, numberOfAutomaticLotto);
         OutputView.printLottoTicket(ticket);
 
         LottoNumbers luckyNumbers = InputView.getLuckyNumbers();
