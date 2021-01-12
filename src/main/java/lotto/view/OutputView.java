@@ -5,9 +5,10 @@ import lotto.domain.*;
 import java.util.stream.Collectors;
 
 public class OutputView {
-    public static void printNumberOfLottoPurchased(Price inputPrice) {
-        int number = inputPrice.divide(LottoTicketIssuer.TICKET_PRICE).getPrice();
-        System.out.println(number + "개를 구매했습니다.");
+    public static void printNumberOfLottoPurchased(Count numberOfManualLotto, Count numberOfAutomaticLotto) {
+        String message = String.format("수동으로 %d개, 자동으로 %d개를 구매했습니다."
+                , numberOfManualLotto.getCount(), numberOfAutomaticLotto.getCount());
+        System.out.println(message);
     }
 
     public static void printLottoTicket(LottoTicket lottoTicket) {
@@ -21,7 +22,8 @@ public class OutputView {
     public static void printStatistics(MatchResult matchResult, Rate rateOfReturn) {
         StringBuilder message = new StringBuilder();
 
-        message.append("당첨 통계")
+        message.append(System.lineSeparator())
+                .append("당첨 통계")
                 .append(System.lineSeparator())
                 .append("---------")
                 .append(System.lineSeparator());
